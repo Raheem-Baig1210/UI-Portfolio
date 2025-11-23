@@ -1,0 +1,104 @@
+/* --- CSS Variables --- */
+:root {
+  --background-color: #1a1a1a; /* Black */
+  --foreground-color: #e8e3d8; /* Off-white */
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+  --transition-speed: 0.3s;
+}
+
+/* --- Main Container & Layers --- */
+.preloader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  /* Screen starts off-white (initial state for blinds reveal) */
+  background-color: var(--foreground-color); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.blinds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 1; /* Blinds are in the background layer */
+}
+
+.bar {
+  flex-grow: 1;
+  /* Bars are black, and rise to cover the off-white bg */
+  background-color: var(--background-color);
+}
+
+/* --- Revealed Content --- */
+.final-logo-container {
+  color: var(--foreground-color); /* Off-white text */
+  text-align: center;
+  z-index: 2; /* Sits on top of the blinds */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  /* Add overflow hidden to clip text initially below the screen */
+  overflow: hidden; 
+}
+
+.final-logo-container h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 15vw, 10rem);
+  font-weight: 700;
+  margin: 0;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.final-logo-container p {
+  font-family: var(--font-sans);
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+  padding-left: 0.3em;
+}
+
+/* --- Simplified Enter Button --- */
+.enter-button {
+  background: none;
+  border: 1px solid rgba(232, 227, 216, 0.5);
+  color: var(--foreground-color);
+  padding: 10px 20px;
+  margin-top: 2.5rem;
+  font-family: var(--font-sans);
+  letter-spacing: 0.2em;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+
+.enter-button:hover {
+  background-color: rgba(232, 227, 216, 0.1);
+  border-color: var(--foreground-color);
+}
+
+.arrow {
+  transition: transform var(--transition-speed) ease;
+  font-size: 1.2em;
+}
+
+.enter-button:hover .arrow {
+  transform: translateX(5px);
+}

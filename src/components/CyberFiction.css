@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: gilroy, sans-serif;
+}
+
+/* ✅ Required Fix */
+#main {
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Sections */
+#page,
+#page1,
+#page2,
+#page3 {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  background: #fff;
+}
+
+/* ✅ Canvas must NOT be sticky */
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100vh !important;
+  object-fit: cover;
+  z-index: 5;
+}
+
+/* Loop Text */
+#loop {
+  display: flex;
+  position: absolute;
+  top: 30%;
+  font-size: 100px;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+}
+
+#loop h1 {
+  animation: loopAnim 15s linear infinite;
+  font-weight: 400;
+}
+
+#loop span {
+  -webkit-text-stroke: 1.5px black;
+  color: transparent;
+  font-weight: 500;
+}
+
+@keyframes loopAnim {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Text Positions */
+#page h3 {
+  position: absolute;
+  top: 55%;
+  left: 5%;
+  color: #666;
+}
+#page h4 {
+  position: absolute;
+  top: 70%;
+  left: 25%;
+  font-weight: 600;
+}
+
+#page1 #right-text { position: absolute; top: 30%; left: 10%; }
+#page1 #left-text { position: absolute; top: 50%; right: 10%; text-align: end; }
+
+#page2 #text1 { position: absolute; top: 30%; left: 10%; }
+#page2 #text2 { position: absolute; top: 55%; right: 10%; text-align: end; }
+
+#page3 #text3 { position: absolute; top: 40%; right: 10%; text-align: end; }

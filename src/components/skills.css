@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap');
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Team Section */
+.team {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1a1a1a; 
+    color: white;
+    gap: 40px; 
+}
+
+/* Images Dock */
+.profile-images {
+    display: flex;
+    gap: 15px;
+}
+
+.image {
+    width: 70px; 
+    height: 70px;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden; 
+    /* GSAP will control transform/scale, so we don't need CSS transition here */
+}
+
+.image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Names Section - Crucial for Hiding Text */
+.profile-names {
+    position: relative;
+    width: 100%;
+    max-width: 900px; 
+    height: 200px; /* Fixed height for clipping */
+    overflow: hidden; /* Hides text outside this area */
+    text-align: center;
+}
+
+.name {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.name h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 8rem; 
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: #ff4d4d; /* Accent color for names */
+    line-height: 1;
+    text-transform: uppercase;
+
+    /* Initial Off-screen Position for most names (GSAP will manage letters) */
+    transform: translateY(100%); 
+}
+
+/* Default Text Position */
+.name h1.default {
+    /* Positioned ABOVE the container */
+    transform: translateY(-100%); 
+    color: #ffffff; /* Different color for default */
+}
+
+/* SplitText setup - letters must be position:relative and display:inline-block */
+.name h1 .char {
+    position: relative;
+    display: inline-block;
+}
