@@ -60,13 +60,13 @@ const MarqueeText = ({ text }) => (
   <div className="marquee-container  bg-black">
     <div className="marquee-content">
       <span
-        className="text-8xl sm:text-8xl lg:text-[120px] xl:text-[150px] font-extrabold tracking-tight text-white uppercase"
+        className="text-5xl sm:text-7xl lg:text-[120px] xl:text-[150px] font-extrabold tracking-tight text-white uppercase"
         style={{ letterSpacing: "-0.04em" }}
       >
         {text}
       </span>
       <span
-        className="text-8xl sm:text-9xl lg:text-[120px] xl:text-[150px] font-extrabold tracking-tight text-white uppercase"
+        className="text-5xl sm:text-7xl lg:text-[120px] xl:text-[150px] font-extrabold tracking-tight text-white uppercase"
         style={{ letterSpacing: "-0.04em" }}
       >
         &nbsp;&nbsp;&nbsp;&nbsp;{text}
@@ -113,23 +113,47 @@ const ContactForm = () => {
     message: "",
   });
   const [submissionMessage, setSubmissionMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In a real application, you would send this data to a server here.
-    console.log("Form Data Submitted:", formData);
+    setIsSubmitting(true);
+    setSubmissionMessage("");
 
-    // Show confirmation message
-    setSubmissionMessage("Request sent! Data logged to console.");
+    try {
+      const response = await fetch(
+        "https://formsubmit.co/ajax/raheembaig825@gmail.com",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            company: formData.company,
+            email: formData.email,
+            message: formData.message,
+            _subject: "New portfolio contact request",
+          }),
+        }
+      );
 
-    // Clear form
-    setFormData({ name: "", company: "", email: "", message: "" });
+      if (!response.ok) throw new Error("Request failed");
 
-    // Hide confirmation after a delay
-    setTimeout(() => setSubmissionMessage(""), 3000);
+      setSubmissionMessage("Request sent! I'll get back to you soon.");
+      setFormData({ name: "", company: "", email: "", message: "" });
+    } catch (error) {
+      setSubmissionMessage(
+        "Something went wrong. Please email me directly instead."
+      );
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setSubmissionMessage(""), 4000);
+    }
   };
 
   return (
@@ -174,9 +198,10 @@ const ContactForm = () => {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full text-4xl sm:text-5xl font-extrabold text-white uppercase mt-20 flex justify-between items-center group border-b-4 border-white pb-1 hover:text-white hover:border-white transition-colors duration-300"
+        disabled={isSubmitting}
+        className="w-full text-4xl sm:text-5xl font-extrabold text-white uppercase mt-20 flex justify-between items-center group border-b-4 border-white pb-1 hover:text-white hover:border-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        SEND REQUEST
+        {isSubmitting ? "SENDING..." : "SEND REQUEST"}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -207,10 +232,10 @@ const App = () => {
 
       {/* Main Content Area */}
       <div className="p-4 lg:p-8 max-w-7xl mx-auto px-2">
-        {/* Side-by-Side Layout for Desktop (flex on all screens by default) */}
-        <div className="flex   items-start pt-16 gap-12">
+        {/* Stacked on mobile/tablet, side-by-side from md up */}
+        <div className="flex flex-col md:flex-row items-start pt-16 gap-10 md:gap-12">
           {/* LEFT SIDE - Info */}
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2">
             <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight max-w-xl">
               Let’s build something impactful together. Reach out!
             </p>
@@ -260,7 +285,7 @@ const App = () => {
                     Location
                   </h4>
                   <p className="text-lg font-bold">
-                    Al Raffa, Bur Dubai, Dubai,UAE
+                    Hyderabad, Telangana, India
                   </p>
                 </div>
               </div>
@@ -268,7 +293,7 @@ const App = () => {
           </div>
 
           {/* RIGHT SIDE - Form */}
-          <div className="w-1/2 mt-4 ">
+          <div className="w-full md:w-1/2 mt-4">
             <ContactForm />
           </div>
         </div>

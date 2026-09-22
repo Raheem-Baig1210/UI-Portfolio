@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // Components
 import Preloader from "./components/Preloader";
@@ -15,10 +18,43 @@ import ContactUs from "./components/ContactUs";
 import FallingText from "./components/Two";
 import { FaWhatsapp } from "react-icons/fa";
 
+gsap.registerPlugin(ScrollTrigger);
+
 function App() {
   const [isSiteEntered, setIsSiteEntered] = useState(false);
+  // The WebGL fluid cursor runs a continuous render loop forever and is a
+  // mouse-hover effect, so it's both pointless and a battery/GPU drain on
+  // touch devices — skip mounting it there entirely.
+  const [isTouchDevice] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      ("ontouchstart" in window || navigator.maxTouchPoints > 0)
+  );
 
   const handleEnterSite = () => setIsSiteEntered(true);
+
+  // Single, site-wide smooth-scroll instance driven by GSAP's ticker so it
+  // stays in sync with every ScrollTrigger animation across the page.
+  useEffect(() => {
+    if (!isSiteEntered) return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const raf = (time) => lenis.raf(time * 1000);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(raf);
+      lenis.destroy();
+    };
+  }, [isSiteEntered]);
 
 const menuItems = [
   { label: "Home", ariaLabel: "Go to home", href: "#main" },
@@ -48,7 +84,7 @@ const menuItems = [
 
       {isSiteEntered && (
         <>
-          <SplashCursor />
+          {!isTouchDevice && <SplashCursor />}
 
            <PortfolioNav
             position="left"
@@ -65,7 +101,7 @@ const menuItems = [
           {/* --- WHATSAPP BUTTONS (FIXED BOTTOM-RIGHT) --- */}
           {/* 1️⃣ Personal WhatsApp Chat */}
           <a
-            href="https://wa.me/971558850649?text=Hello,%20I'm%20interested%20in%20your%20portfolio%20projects."
+            href="https://wa.me/919959014994?text=Hello,%20I'm%20interested%20in%20your%20portfolio%20projects."
             target="_blank"
             rel="noopener noreferrer"
             className="fixed bottom-10 right-4 z-50 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg transition-transform duration-300 hover:scale-110"
@@ -103,14 +139,14 @@ const menuItems = [
 
           <div style={{ position: "relative", height: "300px" }}>
             <FallingText
-              text={`React, JavaScript (ES6+), TypeScript, Redux, Context API, React Hooks, HTML5, CSS3, Tailwind CSS, Styled Components, Bootstrap, Node.js, Express.js, MySQL, MongoDB, RESTful APIs, Axios, Git, GitHub, Vite, Webpack, Babel, Three.js, GSAP, Framer Motion, Firebase`}
+              text={`React, Next.js, JavaScript (ES6+), TypeScript, Redux, Context API, React Hooks, HTML5, CSS3, Tailwind CSS, Styled Components, Bootstrap, Node.js, Express.js, MySQL, MongoDB, RESTful APIs, Axios, Git, GitHub, Vite, Webpack, Babel, Three.js, GSAP, Framer Motion, Firebase`}
               highlightWords={["React", "Bits", "animated", "components", "simplify"]}
               highlightClass="highlighted"
-              trigger="hover"
+              trigger="scroll"
               backgroundColor="transparent"
               wireframes={false}
               gravity={0.56}
-              fontSize="2rem"
+              fontSize="clamp(1.1rem, 3vw, 2rem)"
               mouseConstraintStiffness={0.9}
             />
           </div>

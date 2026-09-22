@@ -3,7 +3,6 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "@studio-freight/lenis";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,18 +32,6 @@ const cards = [
     liveProjectUrl: "https://raheem-baig1210.github.io/Quiz_Website/", //  live URL here
   },
   {
-    title: "Typing Game",
-    client: "LMS",
-    copy: "Developed an interactive typing application designed to help users improve their typing speed and accuracy. The tool provides real-time feedback, tracks performance, and offers practice sessions that enhance overall typing efficiency.",
-    color: "bg-black text-white",
-    images: [
-      "/assets/Lms1.png", // CORRECTED PATH
-      "/assets/Lms2.png", // CORRECTED PATH
-      "/assets/Lms3.png", // CORRECTED PATH
-    ],
-    liveProjectUrl: "https://main.d28qh4g0ahgs4w.amplifyapp.com/", //  live URL here
-  },
-  {
     title: "MohallaTuition Management Center",
     client: "Innovate Labs",
     copy: [
@@ -57,6 +44,20 @@ const cards = [
       "/assets/day2day3.png", // CORRECTED PATH (I assumed you meant a different file name here)
     ],
     liveProjectUrl: "https://muhalla-tuition-center.netlify.app/", // Add your live URL here
+  },
+  {
+    title: "Al Özhan Perfumes",
+    client: "Al Özhan Perfumes",
+    copy: [
+      "A full-featured e-commerce storefront for Al Özhan Perfumes, an artisanal perfume and attar brand, with a rich product catalog, cart and checkout flow, and a direct WhatsApp channel for orders. Built with React, Vite, Tailwind CSS, and React Router, deployed on Vercel.",
+    ],
+    color: "bg-black text-white",
+    images: [
+      "/assets/Alozhan1.jpg",
+      "/assets/Alozhan2.jpg",
+      "/assets/Alozhan3.jpg",
+    ],
+    liveProjectUrl: "https://www.alozhanperfumes.com/",
   },
 ];
 
@@ -79,19 +80,7 @@ export default function ScrollStack() {
   const bgRef = useRef(null);
 
   useEffect(() => {
-    // Initialize smooth scrolling
-    const lenis = new Lenis({
-      lerp: 0.07,
-      smoothWheel: true,
-    });
-
-    function raf(time) {
-      lenis.raf(time);
-      ScrollTrigger.update();
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf); // === Circular Reveal Transition (white → black) ===
-
+    // === Circular Reveal Transition (white → black) ===
     gsap.set(bgRef.current, {
       clipPath: "circle(0% at 50% 50%)",
       backgroundColor: "#000",
@@ -167,7 +156,6 @@ export default function ScrollStack() {
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      lenis.destroy();
     };
   }, []);
 
@@ -209,9 +197,9 @@ export default function ScrollStack() {
                   key={cardIndex}
                   id={`card-${cardIndex + 1}`}
                   style={{ zIndex: baseZIndex }}
-                  className={`card absolute top-1/2 left-1/2 transform 
-                    -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl 
-                    h-[70vh] rounded-3xl border-2 border-white p-10 md:p-20 
+                  className={`card absolute top-1/2 left-1/2 transform
+                    -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl
+                    h-[92vh] md:h-[80vh] rounded-3xl border-2 border-white p-6 md:p-20
                     origin-center ${card.color} overflow-hidden shadow-xl`}
                 >
                   {/* Top Bar */}
@@ -249,27 +237,27 @@ export default function ScrollStack() {
                   </div>
 
                   {/* Content */}
-                  <div className="flex flex-col md:flex-row items-center justify-between h-[calc(100%-4rem)] gap-8 pt-2">
-                    <div className="flex-1 text-center md:text-left space-y-4">
+                  <div className="flex flex-col md:flex-row items-center justify-between h-[calc(100%-4rem)] gap-4 md:gap-8 pt-2 overflow-hidden">
+                    <div className="flex-1 min-h-0 overflow-y-auto text-center md:text-left space-y-4">
                       <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter">
                         {card.title}
                       </h1>
                       {/* Handle array copy for cleaner display */}
                       {cardCopy.map((copy, idx) => (
-                        <p key={idx} className="max-w-lg text-sm leading-relaxed opacity-90">
+                        <p key={idx} className="max-w-lg text-sm leading-relaxed opacity-90 text-justify">
                           {copy}
                         </p>
                       ))}
                     </div>
 
                     {/* Images - Mapped to use the new card.images array */}
-                    <div className="flex-shrink-0 flex gap-4 overflow-x-auto p-2 md:h-90 w-[80vw] justify-center">
+                    <div className="flex-shrink-0 flex gap-3 md:gap-4 overflow-x-auto p-2 h-32 sm:h-44 md:h-90 w-full md:w-[80vw] justify-center items-center">
                       {card.images && card.images.map((imageSrc, imgIdx) => (
                         <img
                           key={imgIdx}
                           src={imageSrc}
                           alt={`${card.title} Screenshot ${imgIdx + 1}`}
-                          className="rounded-2xl shadow-xl w-32 h-32 md:w-80 md:h-80 object-cover border border-gray-700"
+                          className="rounded-2xl shadow-xl h-full w-auto max-w-[70vw] sm:max-w-xs md:max-w-none md:w-80 md:h-80 object-contain bg-black/40 border border-gray-700 flex-shrink-0"
                         />
                       ))}
                     </div>

@@ -10,7 +10,8 @@ const carouselItems = [
   { id: 5, text: "HTML", thumbnail: "https://logowik.com/content/uploads/images/492_html5.jpg" },
   { id: 6, text: "CSS", thumbnail: "https://cdn.pixabay.com/photo/2017/08/05/11/16/logo-2582747_1280.png" },
   { id: 7, text: "JAVA SCRIPT", thumbnail: "https://static.vecteezy.com/system/resources/thumbnails/001/416/690/small/js-emblem-orange-shield-and-white-text-vector.jpg" },
-  
+  { id: 8, text: "NEXT JS", thumbnail: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
+
 ];
 
 // Default text when no item is hovered
@@ -38,18 +39,21 @@ const App = () => {
       {/* The Image Preview Container has been removed per your request. */}
 
       {/* Thumbnail Bar */}
-      <nav className="flex space-x-2 md:space-x-4 mb-20 md:mb-40 z-10 p-2 bg-black">
+      <nav className="flex space-x-2 md:space-x-4 mb-20 md:mb-40 z-10 p-2 bg-black max-w-full overflow-x-auto">
         {carouselItems.map((item) => (
           <div
             key={item.id}
-            className="relative cursor-pointer group"
+            className="relative cursor-pointer group shrink-0"
             onMouseEnter={() => handleMouseEnter(item)}
             onMouseLeave={handleMouseLeave}
+            onClick={() =>
+              handleMouseEnter(hoveredItem?.id === item.id ? null : item)
+            }
           >
             <motion.img
               src={item.thumbnail}
               alt={item.text}
-              className={`w-12 h-12 md:w-16 md:h-16 rounded-full object-cover transition-all duration-300 ring-2 ${
+              className={`w-9 h-9 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full object-cover transition-all duration-300 ring-2 ${
                 hoveredItem?.id === item.id ? 'ring-white scale-110 shadow-lg' : 'ring-[#222222] hover:ring-white/50'
               }`}
               onError={(e) => e.target.src = "https://placehold.co/60x60/555/ffffff?text=Err"}

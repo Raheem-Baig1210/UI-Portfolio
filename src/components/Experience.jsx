@@ -4,6 +4,21 @@ import { motion, useScroll, useTransform } from "framer-motion";
 // --- DATA ---
 const timelineData = [
 {
+  title: "Software Developer",
+  subtitle: "Namya IT · Hyderabad, Telangana, India",
+  duration: "October 2025 - Present",
+  description: [
+    "Working as a Software Developer at Namya IT, based in Hyderabad, Telangana, India, building production web applications across the full stack.",
+    "Developing responsive, high-performance user interfaces with React and Next.js, styled with Tailwind CSS and animated using GSAP and Framer Motion.",
+    "Designing and consuming RESTful APIs, and building server-side logic with Node.js and Express.js backed by MySQL and MongoDB.",
+    "Collaborating closely with designers, product owners, and fellow developers in an agile workflow to turn requirements into shipped features.",
+    "Writing clean, modular, and reusable code, and participating in code reviews to maintain quality and consistency across the codebase.",
+    "Debugging issues, optimizing application performance, and improving load times and overall user experience.",
+    "Using Git and GitHub for version control and collaborative development within the team.",
+  ],
+},
+
+{
   title: "Full Stack Developer",
   subtitle: "Career Guidance Council (CGC)",
   duration: "November 2024 - October 2025",

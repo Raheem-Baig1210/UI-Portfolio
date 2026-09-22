@@ -10,6 +10,19 @@ const CyberFiction = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
+    // The frame sequence below is ~73MB of uncompressed PNGs eagerly
+    // downloaded and scrubbed via canvas across a long pinned scroll.
+    // That's heavy on mobile bandwidth/CPU and causes real jank, so on
+    // small/touch screens skip it entirely and show a static frame
+    // (see the CSS-driven fallback <img> in the markup) with normal,
+    // unpinned scrolling instead.
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) {
+      return () => {
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      };
+    }
+
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
@@ -118,12 +131,23 @@ const CyberFiction = () => {
         </div>
 
         <h3>
-Results-driven developer with 2 years of experience in <br />full-stack and frontend development. Skilled in React, Node.js, and <br /> MySQL,  with a strong foundation in building scalable, <br /> user-focused web apps and collaborating effectively to deliver <br /> impactful solutions.
-         
+          Results-driven developer with 2 years of experience in full-stack
+          and frontend development. Skilled in React, Node.js, and MySQL,
+          with a strong foundation in building scalable, user-focused web
+          apps and collaborating effectively to deliver impactful solutions.
         </h3>
         <h4 className="mt-4">..SCROLL TO READ</h4>
 
         <canvas ref={canvasRef}></canvas>
+        {/* Lightweight static stand-in for mobile/small screens — see the
+            CSS-only breakpoint swap and the effect above that skips the
+            73MB frame-sequence download on those devices. */}
+        <img
+          id="hero-fallback-img"
+          src="/Images/male0072.png"
+          alt="Full stack developer"
+          loading="eager"
+        />
       </div>
 
       {/* SECTION 1 */}
